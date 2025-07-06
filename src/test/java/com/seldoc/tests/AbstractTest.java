@@ -9,6 +9,7 @@ import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.slf4j.Logger;
@@ -40,13 +41,21 @@ public abstract class AbstractTest {
     private WebDriver getRemoteDriver() throws MalformedURLException {
         Capabilities capabilities = new ChromeOptions();
 
-         if (Config.get(Constants.BROWSER).equalsIgnoreCase(Constants.FIREFOX)) {
+         if (Config.get(Constants.BROWSER).equalsIgnoreCase(Constants.FIREFOX))
            capabilities = new FirefoxOptions();
-        }
-        return new RemoteWebDriver(new URL("http://localhost:4444/wd/hub"), capabilities);
+
+         String urlFormat = Config.get(Constants.REMOTE_URL_FORMAT);
+         String hubHost = Config.get(Constants.REMOTE_URL_HOST);
+         String url = String.format(urlFormat, hubHost);
+        return new RemoteWebDriver(new URL(url), capabilities);
     }
 
     private WebDriver getLocalDriver() {
+        if (Config.get(Constants.BROWSER).equalsIgnoreCase(Constants.FIREFOX)) {
+            WebDriverManager.firefoxdriver().setup();
+            return new FirefoxDriver();
+        }
+
         WebDriverManager.chromedriver().setup();
         return new ChromeDriver();
     }
