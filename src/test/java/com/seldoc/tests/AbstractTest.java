@@ -27,6 +27,9 @@ public abstract class AbstractTest {
 
     @BeforeTest
     public void setDriver(ITestContext testContext) throws MalformedURLException {
+        System.out.println("isRemote: " +Boolean.getBoolean("isRemote"));
+        System.out.println("browser: " + System.getProperty("browser"));
+
         this.driver = Boolean.getBoolean("isRemote") ? getRemoteDriver() : getLocalDriver();
         testContext.setAttribute(Constants.CURRENT_DRIVER, this.driver);
     }
@@ -51,9 +54,9 @@ public abstract class AbstractTest {
         this.driver.quit();
     }
 
-    /*@AfterMethod
+    @AfterMethod
     public void sleep(){
-        Uninterruptibles.sleepUninterruptibly(Duration.ofSeconds(5));
-    }*/
+        Uninterruptibles.sleepUninterruptibly(Duration.ofSeconds(3));
+    }
 
 }
