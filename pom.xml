@@ -83,8 +83,8 @@
                 <version>${maven.surefire.version}</version>
                 <configuration>
                     <systemPropertyVariables>
+                        <isRemote>false</isRemote>
                         <browser>chrome</browser>
-                        <isRemote>true</isRemote>
                     </systemPropertyVariables>
                     <suiteXmlFiles>
                         <file>src/test/resources/test-suites/flight-reservation.xml</file>

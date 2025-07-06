@@ -2,6 +2,7 @@ package com.seldoc.tests;
 
 import com.google.common.util.concurrent.Uninterruptibles;
 import com.seldoc.listener.TestListener;
+import com.seldoc.util.Config;
 import com.seldoc.util.Constants;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.Capabilities;
@@ -10,11 +11,10 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.remote.RemoteWebDriver;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.testng.ITestContext;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.AfterTest;
-import org.testng.annotations.BeforeTest;
-import org.testng.annotations.Listeners;
+import org.testng.annotations.*;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -24,21 +24,23 @@ import java.time.Duration;
 public abstract class AbstractTest {
 
     protected WebDriver driver;
+    public static Logger log = LoggerFactory.getLogger(AbstractTest.class);
+
+    @BeforeSuite
+    public void initializeConfigs(){
+        Config.initialize();
+    }
 
     @BeforeTest
     public void setDriver(ITestContext testContext) throws MalformedURLException {
-        System.out.println("isRemote: " +Boolean.getBoolean("isRemote"));
-        System.out.println("browser: " + System.getProperty("browser"));
-
-        this.driver = Boolean.getBoolean("isRemote") ? getRemoteDriver() : getLocalDriver();
+        this.driver = Boolean.parseBoolean(Config.get(Constants.IS_REMOTE)) ? getRemoteDriver() : getLocalDriver();
         testContext.setAttribute(Constants.CURRENT_DRIVER, this.driver);
     }
 
     private WebDriver getRemoteDriver() throws MalformedURLException {
-        Capabilities capabilities = null;
-        capabilities = new ChromeOptions();
+        Capabilities capabilities = new ChromeOptions();
 
-         if (System.getProperty("browser").equalsIgnoreCase("firefox")) {
+         if (Config.get(Constants.BROWSER).equalsIgnoreCase(Constants.FIREFOX)) {
            capabilities = new FirefoxOptions();
         }
         return new RemoteWebDriver(new URL("http://localhost:4444/wd/hub"), capabilities);
