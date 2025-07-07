@@ -7,7 +7,8 @@ import java.util.Properties;
 
 public class Config {
 
-    public static final String DEFAULT_CONFIG_PATH = "src/test/resources/Config/default.properties";
+    //public static final String DEFAULT_CONFIG_PATH = "src/test/resources/config/default.properties";
+    public static final String DEFAULT_CONFIG_PATH = "config/default.properties";
     public static final Logger log = LoggerFactory.getLogger(Config.class);
     public static Properties properties;
 
