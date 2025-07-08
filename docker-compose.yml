@@ -1,0 +1,10 @@
+services:
+  test-framework:
+    image: sethisandeepsethi/selenium-docker
+    environment:
+      - BROWSER=${BROWSER}
+      - HUB_HOST=hub
+      - THREAD_COUNT=${THREAD_COUNT}
+      - TEST_SUITE=${TEST_SUITE}
+    volumes:
+      - ./output/${TEST_SUITE}:/home/selenium-docker/test-output
