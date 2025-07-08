@@ -15,11 +15,13 @@ import java.util.Objects;
  */
 public class ResourceLoader {
 
-    private static final Logger log = LoggerFactory.getLogger(ResourceLoader.class);
+    private static final Logger log = LoggerFactory
+            .getLogger(ResourceLoader.class);
 
     public static InputStream getResource(String path) throws Exception {
         log.info("reading resource from location: {}", path);
-        InputStream stream = ResourceLoader.class.getClassLoader().getResourceAsStream(path);
+        InputStream stream = ResourceLoader.class.getClassLoader()
+                                        .getResourceAsStream(path);
         if(Objects.nonNull(stream)){
             return stream;
         }
