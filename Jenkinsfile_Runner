@@ -29,8 +29,8 @@ pipeline {
 
         post {
             always {
-                sh "docker-compose -f docker-compose_grid.yaml down"
-                sh "docker-compose -f docker-compose_tests.yaml down"
+                sh "docker-compose -f docker-compose_grid.yml down"
+                sh "docker-compose -f docker-compose_tests.yml down"
                 archiveArtifacts artifacts: 'output/flight-reservation/emailable-report.html', followSymlinks: false
                 archiveArtifacts artifacts: 'output/vendor-portal/emailable-report.html', followSymlinks: false
             }
