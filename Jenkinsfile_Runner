@@ -4,12 +4,11 @@ pipeline {
 
     parameters{
         choice choices: ['chrome', 'firefox'], description: 'Select the browser', name: 'BROWSER'
-        choice choices: ['vendor-portal.xml', 'flight-reservation.xml'], description: 'Select the test suite', name: 'TEST_SUITE'
+        choice choices: ['vendor-portal.xml', 'flight-reservation.xml', 'suite-of-suites'], description: 'Select the test suite', name: 'TEST_SUITE'
         choice choices: ['1', '2', '3', '4', '5'], description: 'Concurrent Tests per container', name: 'THREAD_COUNT'
     }
 
     stages {
-
         stage('Start Grid'){
             steps {
                 sh "docker-compose -f docker-compose_grid.yml up --scale ${params.BROWSER}=2 -d"
@@ -33,8 +32,6 @@ pipeline {
         always {
             sh "docker-compose -f docker-compose_grid.yml down"
             sh "docker-compose -f docker-compose_tests.yml down"
-            archiveArtifacts artifacts: 'output/flight-reservation.xml/emailable-report.html', followSymlinks: false
-            archiveArtifacts artifacts: 'output/vendor-portal.xml/emailable-report.html', followSymlinks: false
         }
     }
 

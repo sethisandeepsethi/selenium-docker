@@ -1,0 +1,6 @@
+<suite name="Suite of suites">
+    <suite-files>
+        <suite-file path="flight-reservation.xml"/>
+        <suite-file path="vendor-portal.xml"/>
+    </suite-files>
+</suite>
