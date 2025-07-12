@@ -5,6 +5,7 @@ pipeline {
     parameters{
         choice choices: ['chrome', 'firefox'], description: 'Select the browser', name: 'BROWSER'
         choice choices: ['vendor-portal.xml', 'flight-reservation.xml'], description: 'Select the test suite', name: 'TEST_SUITE'
+        choice choices: ['1', '2', '3', '4', '5'], description: 'Concurrent Tests per container', name: 'THREAD_COUNT'
     }
 
     stages {
@@ -17,7 +18,7 @@ pipeline {
 
         stage('Run Tests'){
             steps {
-                sh "BROWSER = params.BROWSER TEST_SUITE=params.TEST_SUITE docker-compose -f docker-compose_tests.yml up --pull=always"
+                sh "BROWSER = params.BROWSER THREAD_COUNT=params.BROWSER THREAD_COUNT TEST_SUITE=params.TEST_SUITE docker-compose -f docker-compose_tests.yml up --pull=always"
                 script {
                     if(fileExists('output/flight-reservation.xml/testng-failed.xml') ||
                             fileExists('output/vendor-portal.xml/testng-failed.xml')){
